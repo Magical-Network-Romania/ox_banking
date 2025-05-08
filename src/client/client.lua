@@ -1,6 +1,6 @@
 local config = lib.loadJson('data.config')
 
-if config.UseOxTarget then return end
+if config.UseOxTarget or config.UseSleeplessInteract then return end
 
 lib.locale()
 

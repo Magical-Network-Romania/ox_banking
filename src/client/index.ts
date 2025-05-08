@@ -140,6 +140,38 @@ if (Config.UseOxTarget) {
 
     createBankBlip(bank.coords);
   });
+} else if (Config.UseSleeplessInteract) {
+  const atms = LoadJsonFile<typeof import('~/data/atms.json')>('data/atms.json').map((value) => GetHashKey(value));
+
+  const atmOptions = {
+    name: 'access_atm',
+    icon: 'fa-solid fa-money-check',
+    label: Locale('target_access_atm'),
+    export: 'openAtm',
+    distance: 1.3,
+    offsetAbsolute: { x: 0, y: 0, z: 1 }
+  };
+
+  const bankOptions = {
+    name: 'access_bank',
+    icon: 'fa-solid fa-dollar-sign',
+    label: Locale('target_access_bank'),
+    export: 'openBank',
+    distance: 1.3,
+  };
+
+  exports.sleepless_interact.addModel(atms, atmOptions);
+
+  banks.forEach((bank) => {
+    const coords = {
+      x: bank.coords[0],
+      y: bank.coords[1],
+      z: bank.coords[2]
+    }
+    exports.sleepless_interact.addCoords(coords, bankOptions);
+
+    createBankBlip(bank.coords);
+  });
 } else banks.forEach(({ coords }) => createBankBlip(coords));
 
 RegisterNuiCallback('exit', async (_: any, cb: Function) => {
